@@ -30,7 +30,6 @@
 
   <ItemGroup>
     <Folder Include="backups\" />
-    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>
