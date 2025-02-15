@@ -1,0 +1,17 @@
+﻿db:
+  image: mcr.microsoft.com/mssql/server:2019-ltsc
+  container_name: sql_server
+  environment:
+    - ACCEPT_EULA=Y
+    - SA_PASSWORD=YourStrongPassword
+  ports:
+    - "1433:1433"
+  volumes:
+    - sql_data:/var/opt/mssql
+    - ./backups/PPI_CHALLENGE.bak:/var/opt/mssql/PPI_CHALLENGE.bak
+    - ./restore-db.sh:/docker-entrypoint-initdb.d/restore-db.sh 
+  command: /bin/bash -c "/docker-entrypoint-initdb.d/restore-db.sh && /opt/mssql/bin/sqlservr"
+
+volumes:
+  sql_data:
+    driver: local
