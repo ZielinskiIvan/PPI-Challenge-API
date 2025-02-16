@@ -14,7 +14,6 @@ namespace PPI_Challenge_API
         {
             base.OnModelCreating(builder);
         }
-
         public DbSet<Error> Errors { get; set; }
 
     }

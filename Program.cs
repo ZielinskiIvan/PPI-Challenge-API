@@ -33,6 +33,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddScoped<IErrorsRepository, ErrorsRepository>();
+
 builder.Services.AddTransient<IUsersService, UsersService>();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
@@ -59,7 +61,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("isadmin", policy => policy.RequireClaim("isadmin"));
+    options.AddPolicy("AdminPolicy", policy => policy.RequireClaim("Admin"));
 });
 
 
@@ -74,6 +76,7 @@ app.UseExceptionHandler(exceptionHandlerApp => exceptionHandlerApp.Run(async con
     if (exception != null)
     {
         // Log con Serilog
+        //Log.Error(exception, "Ocurrió una excepción inesperada en la API");
 
         // Crear un objeto de error para almacenar en la base de datos
         var error = new Error
@@ -84,8 +87,8 @@ app.UseExceptionHandler(exceptionHandlerApp => exceptionHandlerApp.Run(async con
         };
 
         // Guardar el error en la base de datos
-        //var repository = context.RequestServices.GetRequiredService<IErrorsRepository>();
-        //await repository.Create(error);
+        var repository = context.RequestServices.GetRequiredService<IErrorsRepository>();
+        await repository.CreateAsync(error);
 
         // Devolver la respuesta JSON con código de error 500
         await Results.Json(new
@@ -105,5 +108,7 @@ app.UseOutputCache();
 app.UseAuthorization();
 
 app.MapGroup("account").MapAccount();
+
+app.MapGroup("Error").MapErrors();
 
 app.Run();

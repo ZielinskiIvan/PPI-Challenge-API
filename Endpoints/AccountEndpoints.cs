@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using PPI_Challenge_API.DTO.RequestDTO;
 using PPI_Challenge_API.DTO.ResponseDTO;
 using PPI_Challenge_API.Filters;
+using PPI_Challenge_API.Services.Implementations;
 using PPI_Challenge_API.Services.Interfaces;
 using PPI_Challenge_API.Utilities;
 using System.IdentityModel.Tokens.Jwt;
@@ -25,6 +27,7 @@ namespace PPI_Challenge_API.Endpoints
             group.MapPost("/changepassword", ChangePassword).RequireAuthorization()
             .AddEndpointFilter<ValidationFilter<ChangePasswordDTO>>();
             group.MapPost("/login", Login);
+            group.MapPost("/makeAdmin", MakeAdmin).RequireAuthorization("AdminPolicy");
             return group;
         }
 
@@ -141,6 +144,28 @@ namespace PPI_Challenge_API.Endpoints
                 Token = token,
                 Expiration = expiration
             };
+        }
+
+
+        static async Task<Results<NoContent, BadRequest<string>>> MakeAdmin(EditClaimDTO editClaimDTO,
+            [FromServices] UserManager<IdentityUser> userManager, IUsersService usersService)
+        {
+            var user = await userManager.FindByEmailAsync(editClaimDTO.Email);
+
+            if (user is null)
+            {
+                return TypedResults.BadRequest(string.Empty);
+            }
+
+            var claims = await userManager.GetClaimsAsync(user);
+
+            // Verificar si ya tiene el claim "Admin"
+            if (!claims.Any(c => c.Type == "Admin"))
+            {
+                await userManager.AddClaimAsync(user, new Claim("Admin", "true"));
+            }
+
+            return TypedResults.NoContent();
         }
 
 
