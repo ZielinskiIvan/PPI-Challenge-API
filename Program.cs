@@ -6,16 +6,29 @@ using PPI_Challenge_API.Endpoints;
 using PPI_Challenge_API.Services.Implementations;
 using PPI_Challenge_API.Services.Interfaces;
 using PPI_Challenge_API.Utilities;
-using PPI_Challenge_API;
 using Microsoft.AspNetCore.Diagnostics;
 using PPI_Challenge_API.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configurar la conexión a la base de datos
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer("name=DefaultConnection"));
+var databaseProvider = builder.Configuration["DatabaseProvider"];
+
+if (databaseProvider == "SqlServer")
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+}
+else if (databaseProvider == "PostgreSql")
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
+}
+builder.Services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     {
@@ -61,7 +74,9 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminPolicy", policy => policy.RequireClaim("Admin"));
+
+    options.AddPolicy(PolicyUtilities.AdminPolicy, p => p.RequireClaim(ClaimUtilities.AdminClaim));
+
 });
 
 
@@ -109,6 +124,6 @@ app.UseAuthorization();
 
 app.MapGroup("account").MapAccount();
 
-app.MapGroup("Error").MapErrors();
+app.MapGroup("errors").MapErrors();
 
 app.Run();

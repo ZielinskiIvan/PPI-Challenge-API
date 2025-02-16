@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
 using PPI_Challenge_API.DTO.RequestDTO;
+using PPI_Challenge_API.Utilities;
 
 namespace PPI_Challenge_API.Validators
 {
-    public class UserCredentialsDTOValidator: AbstractValidator<UserCredentialsDTO>
+    public class UserCredentialsDTOValidator: AbstractValidator<UserRegisterDTO>
     {
         public UserCredentialsDTOValidator()
         {

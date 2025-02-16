@@ -7,9 +7,9 @@ namespace PPI_Challenge_API.Services.Implementations
     public class ErrorsRepository : IErrorsRepository
     {
 
-        private ApplicationDbContext _context;
+        private IApplicationDbContext _context;
 
-        public ErrorsRepository(ApplicationDbContext context)
+        public ErrorsRepository(IApplicationDbContext context)
         {
             this._context = context;
         }

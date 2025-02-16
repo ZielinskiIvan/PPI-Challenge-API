@@ -22,16 +22,19 @@ namespace PPI_Challenge_API.Endpoints
     {
         public static RouteGroupBuilder MapAccount(this RouteGroupBuilder group) 
         {
-            group.MapPost("/register", Register).AddEndpointFilter<ValidationFilter<UserCredentialsDTO>>();
-            group.MapGet("/renew", Renew).AddEndpointFilter<ValidationFilter<UserCredentialsDTO>>().RequireAuthorization();
-            group.MapPost("/changepassword", ChangePassword).RequireAuthorization()
-            .AddEndpointFilter<ValidationFilter<ChangePasswordDTO>>();
+            group.MapPost("/register", Register)
+                .AddEndpointFilter<ValidationFilter<UserRegisterDTO>>();
+            group.MapGet("/renew", Renew)
+                .RequireAuthorization();
+            group.MapPost("/changepassword", ChangePassword)
+                .AddEndpointFilter<ValidationFilter<ChangePasswordDTO>>();
             group.MapPost("/login", Login);
-            group.MapPost("/makeAdmin", MakeAdmin).RequireAuthorization("AdminPolicy");
+            group.MapPost("/makeAdmin", MakeAdmin)
+                .RequireAuthorization(PolicyUtilities.AdminPolicy);
             return group;
         }
 
-        private static async Task<Results<Ok<AuthenticationResponseDTO>,BadRequest<IEnumerable<IdentityError>>>> Register([FromServices] UserManager<IdentityUser> userManager, UserCredentialsDTO userCredentialsDTO, IConfiguration configuration, IMapper mapper) 
+        private static async Task<Results<Ok<AuthenticationResponseDTO>,BadRequest<IEnumerable<IdentityError>>>> Register([FromServices] UserManager<IdentityUser> userManager, UserRegisterDTO userCredentialsDTO, IConfiguration configuration, IMapper mapper) 
         {
             var user = mapper.Map<IdentityUser>(userCredentialsDTO);
             var result = await userManager.CreateAsync(user, userCredentialsDTO.Password);
@@ -59,7 +62,7 @@ namespace PPI_Challenge_API.Endpoints
                 return TypedResults.NoContent();
             }
 
-            var usersCredential = new UserCredentialsDTO { Email = user.Email! };
+            var usersCredential = new UserRegisterDTO { Email = user.Email! };
             var response = await BuildToken(usersCredential, configuration, userManager);
             return TypedResults.Ok(response);
         }
@@ -68,7 +71,7 @@ namespace PPI_Challenge_API.Endpoints
             IUsersService usersService,
             [FromServices] UserManager<IdentityUser> userManager)
         {
-            var user = await usersService.GetUser();
+            var user = await userManager.FindByEmailAsync(changePasswordDTO.Email);
             if (user is null)
             {
                 return TypedResults.NotFound();
@@ -120,15 +123,14 @@ namespace PPI_Challenge_API.Endpoints
         {
             var claims = new List<Claim>
             {
-                new Claim("email", userCredentialsDTO.Email),
+                new Claim(ClaimUtilities.EmailClaim, userCredentialsDTO.Email),
             };
 
-            var user = await userManager.FindByNameAsync(userCredentialsDTO.UserName);
+            var user = await userManager.FindByEmailAsync(userCredentialsDTO.Email);
 
-            var claimsFromDB = await userManager.GetClaimsAsync(user);
+            var claimsFromDB = await userManager.GetClaimsAsync(user!);
             claims.AddRange(claimsFromDB);
             
-
             var key = KeysHandler.GetKey(configuration).First();
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -145,8 +147,6 @@ namespace PPI_Challenge_API.Endpoints
                 Expiration = expiration
             };
         }
-
-
         static async Task<Results<NoContent, BadRequest<string>>> MakeAdmin(EditClaimDTO editClaimDTO,
             [FromServices] UserManager<IdentityUser> userManager, IUsersService usersService)
         {
@@ -160,11 +160,10 @@ namespace PPI_Challenge_API.Endpoints
             var claims = await userManager.GetClaimsAsync(user);
 
             // Verificar si ya tiene el claim "Admin"
-            if (!claims.Any(c => c.Type == "Admin"))
+            if (!claims.Any(c => c.Type == ClaimUtilities.AdminClaim))
             {
-                await userManager.AddClaimAsync(user, new Claim("Admin", "true"));
+                await userManager.AddClaimAsync(user, new Claim(ClaimUtilities.AdminClaim, "true"));
             }
-
             return TypedResults.NoContent();
         }
 

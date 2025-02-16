@@ -1,4 +1,4 @@
-﻿namespace PPI_Challenge_API.Validators
+﻿namespace PPI_Challenge_API.Utilities
 {
     public static class ValidationUtilities
     {
