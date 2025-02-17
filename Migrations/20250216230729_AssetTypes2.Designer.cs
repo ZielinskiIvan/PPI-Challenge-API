@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PPI_Challenge_API;
+using PPI_Challenge_API.Services.Implementations;
 
 #nullable disable
 
 namespace PPI_Challenge_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250212211002_firstMigration")]
-    partial class firstMigration
+    [Migration("20250216230729_AssetTypes2")]
+    partial class AssetTypes2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,7 @@ namespace PPI_Challenge_API.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("NVARCHAR(450)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -68,7 +68,7 @@ namespace PPI_Challenge_API.Migrations
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("NVARCHAR(450)");
 
                     b.HasKey("Id");
 
@@ -195,7 +195,7 @@ namespace PPI_Challenge_API.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("NVARCHAR(450)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -221,6 +221,23 @@ namespace PPI_Challenge_API.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("PPI_Challenge_API.Entities.AssetType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AssetTypes");
                 });
 
             modelBuilder.Entity("PPI_Challenge_API.Entities.Error", b =>

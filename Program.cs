@@ -6,16 +6,29 @@ using PPI_Challenge_API.Endpoints;
 using PPI_Challenge_API.Services.Implementations;
 using PPI_Challenge_API.Services.Interfaces;
 using PPI_Challenge_API.Utilities;
-using PPI_Challenge_API;
 using Microsoft.AspNetCore.Diagnostics;
 using PPI_Challenge_API.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configurar la conexión a la base de datos
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer("name=DefaultConnection"));
+var databaseProvider = builder.Configuration["DatabaseProvider"];
+
+if (databaseProvider == "SqlServer")
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+}
+else if (databaseProvider == "PostgreSql")
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSqlConnection")));
+}
+builder.Services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     {
@@ -32,6 +45,12 @@ builder.Services.AddOutputCache();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
+
+
+builder.Services.AddScoped<IAssetTypeRepository, AssetTypeRepository>();
+builder.Services.AddScoped<IStateRepository, StateRepository>();
+
+builder.Services.AddScoped<IErrorsRepository, ErrorsRepository>();
 
 builder.Services.AddTransient<IUsersService, UsersService>();
 builder.Services.AddAutoMapper(typeof(Program));
@@ -59,7 +78,9 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("isadmin", policy => policy.RequireClaim("isadmin"));
+
+    options.AddPolicy(PolicyUtilities.AdminPolicy, p => p.RequireClaim(ClaimUtilities.AdminClaim));
+
 });
 
 
@@ -74,6 +95,7 @@ app.UseExceptionHandler(exceptionHandlerApp => exceptionHandlerApp.Run(async con
     if (exception != null)
     {
         // Log con Serilog
+        //Log.Error(exception, "Ocurrió una excepción inesperada en la API");
 
         // Crear un objeto de error para almacenar en la base de datos
         var error = new Error
@@ -84,8 +106,8 @@ app.UseExceptionHandler(exceptionHandlerApp => exceptionHandlerApp.Run(async con
         };
 
         // Guardar el error en la base de datos
-        //var repository = context.RequestServices.GetRequiredService<IErrorsRepository>();
-        //await repository.Create(error);
+        var repository = context.RequestServices.GetRequiredService<IErrorsRepository>();
+        await repository.CreateAsync(error);
 
         // Devolver la respuesta JSON con código de error 500
         await Results.Json(new
@@ -104,6 +126,12 @@ app.UseHttpsRedirection();
 app.UseOutputCache();
 app.UseAuthorization();
 
-app.MapGroup("account").MapAccount();
+app.MapGroup("accounts").MapAccount();
+
+app.MapGroup("errors").MapErrors();
+
+app.MapGroup("assetTypes").MapAssetType();
+
+app.MapGroup("states").MapState();
 
 app.Run();

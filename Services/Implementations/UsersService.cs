@@ -20,5 +20,14 @@ namespace PPI_Challenge_API.Services.Implementations
             var email = emailClaim.Value;
             return await userManager.FindByEmailAsync(email);
         }
+
+        public async Task<bool> IsAdmin()
+        {
+            var adminClaim = httpContextAccessor.HttpContext!
+                .User.Claims.Where(x => x.Type == "Admin").FirstOrDefault();
+
+            return adminClaim is null ? false:true;
+     
+        }
     }
 }

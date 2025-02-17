@@ -5,5 +5,6 @@ namespace PPI_Challenge_API.Services.Interfaces
     public interface IUsersService
     {
         Task<IdentityUser?> GetUser();
+        Task<bool> IsAdmin();
     }
 }

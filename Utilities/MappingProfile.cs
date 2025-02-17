@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using PPI_Challenge_API.DTO.RequestDTO;
+using PPI_Challenge_API.DTO.ResponseDTO;
+using PPI_Challenge_API.Entities;
 
 namespace PPI_Challenge_API.Utilities
 {
@@ -8,8 +10,17 @@ namespace PPI_Challenge_API.Utilities
     {
         public MappingProfile()
         {
-            // Ejemplo de mapeo entre un DTO y un modelo
-            CreateMap<UserCredentialsDTO, IdentityUser>().ReverseMap();
+            CreateMap<UserRegisterDTO, IdentityUser>().ReverseMap();
+            CreateMap<ErrorResponseDTO, Error>().ReverseMap();
+
+            CreateMap<AssetTypeDTO, AssetType>().ReverseMap();
+            CreateMap<AssetTypeUpdateDTO, AssetType>().ReverseMap();
+            CreateMap<AssetTypeResponseDTO, AssetType>().ReverseMap();
+
+            CreateMap<StateDTO, State>().ReverseMap();
+            CreateMap<StateUpdateDTO, State>().ReverseMap();
+            CreateMap<StateResponseDTO, State>().ReverseMap();
+
         }
     }
 }
