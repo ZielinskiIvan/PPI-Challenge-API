@@ -16,12 +16,12 @@ namespace PPI_Challenge_API.Endpoints
             return group;
         }
 
-        static async Task<Results<Ok<List<ErrorDTOResponse>>,NoContent>> GetAll(IConfiguration configuration, IMapper mapper, IErrorsRepository errorsRepository)
+        static async Task<Results<Ok<List<ErrorResponseDTO>>,NoContent>> GetAll(IConfiguration configuration, IMapper mapper, IErrorsRepository errorsRepository)
         {
             List<Error> errors = await errorsRepository.GetAllAsync();
             if (errors.Count >= 0)
             {
-                var response = mapper.Map<List<ErrorDTOResponse>>(errors);
+                var response = mapper.Map<List<ErrorResponseDTO>>(errors);
                 return TypedResults.Ok(response);
             }
             return TypedResults.NoContent();

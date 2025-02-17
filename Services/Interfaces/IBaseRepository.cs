@@ -2,12 +2,13 @@
 {
     public interface IBaseRepository<T>
     {
-        Task<T> GetById();
+        Task<T> GetByIdAsync(int id);
         Task<T> GetByNameAsync(string name);
         Task<List<T>> GetAllAsync();
         Task CreateAsync(T entity);
         Task UpdateAsync(T entity);
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(int id);
         Task<bool> ExistsAsync(string name);
+        Task<bool> ExistsAsync(int id);
     }
 }

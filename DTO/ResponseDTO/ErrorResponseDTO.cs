@@ -1,6 +1,6 @@
 ﻿namespace PPI_Challenge_API.DTO.ResponseDTO
 {
-    public class ErrorDTOResponse
+    public class ErrorResponseDTO
     {
         public Guid Id { get; set; }
         public string ErrorMessage { get; set; } = null!;

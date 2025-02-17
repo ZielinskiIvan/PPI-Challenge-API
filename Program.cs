@@ -46,6 +46,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 
+
+builder.Services.AddScoped<IAssetTypeRepository, AssetTypeRepository>();
+builder.Services.AddScoped<IStateRepository, StateRepository>();
+
 builder.Services.AddScoped<IErrorsRepository, ErrorsRepository>();
 
 builder.Services.AddTransient<IUsersService, UsersService>();
@@ -122,8 +126,12 @@ app.UseHttpsRedirection();
 app.UseOutputCache();
 app.UseAuthorization();
 
-app.MapGroup("account").MapAccount();
+app.MapGroup("accounts").MapAccount();
 
 app.MapGroup("errors").MapErrors();
+
+app.MapGroup("assetTypes").MapAssetType();
+
+app.MapGroup("states").MapState();
 
 app.Run();

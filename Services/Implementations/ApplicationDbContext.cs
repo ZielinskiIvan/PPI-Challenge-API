@@ -37,6 +37,7 @@ namespace PPI_Challenge_API.Services.Implementations
         }
 
         public DbSet<Error> Errors { get; set; }
-
+        public DbSet<AssetType> AssetTypes { get; set; }
+        public DbSet<State> States { get; set; }
     }
 }

@@ -10,9 +10,17 @@ namespace PPI_Challenge_API.Utilities
     {
         public MappingProfile()
         {
-            // Ejemplo de mapeo entre un DTO y un modelo
             CreateMap<UserRegisterDTO, IdentityUser>().ReverseMap();
-            CreateMap<ErrorDTOResponse, Error>().ReverseMap();
+            CreateMap<ErrorResponseDTO, Error>().ReverseMap();
+
+            CreateMap<AssetTypeDTO, AssetType>().ReverseMap();
+            CreateMap<AssetTypeUpdateDTO, AssetType>().ReverseMap();
+            CreateMap<AssetTypeResponseDTO, AssetType>().ReverseMap();
+
+            CreateMap<StateDTO, State>().ReverseMap();
+            CreateMap<StateUpdateDTO, State>().ReverseMap();
+            CreateMap<StateResponseDTO, State>().ReverseMap();
+
         }
     }
 }

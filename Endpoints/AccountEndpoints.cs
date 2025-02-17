@@ -28,7 +28,8 @@ namespace PPI_Challenge_API.Endpoints
                 .RequireAuthorization();
             group.MapPost("/changepassword", ChangePassword)
                 .AddEndpointFilter<ValidationFilter<ChangePasswordDTO>>();
-            group.MapPost("/login", Login);
+            group.MapPost("/login", Login)
+                .AddEndpointFilter<ValidationFilter<UserCredentialsDTO>>();
             group.MapPost("/makeAdmin", MakeAdmin)
                 .RequireAuthorization(PolicyUtilities.AdminPolicy);
             return group;
