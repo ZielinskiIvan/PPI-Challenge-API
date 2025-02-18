@@ -7,8 +7,12 @@ namespace PPI_Challenge_API.Services.Interfaces
     {
         DbSet<Error> Errors { get; }
         DbSet<AssetType> AssetTypes { get; }
+        DbSet<State> States { get; }
+        DbSet<Asset> Assets { get; }
+        DbSet<CommissionTax> CommissionTaxes { get; }
 
-        public DbSet<State> States { get; }
+        DbSet<Order> Orders { get; }
+        
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     }

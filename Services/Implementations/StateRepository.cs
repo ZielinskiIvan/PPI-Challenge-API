@@ -18,12 +18,8 @@ namespace PPI_Challenge_API.Services.Implementations
             if (!await ExistsAsync(entity.Description))
             {
                 await _context.States.AddAsync(entity);
-                await _context.SaveChangesAsync();
             }
-            else
-            {
-                throw new Exception(ExceptionUtilities.AlreadyExitsError);
-            }
+            await _context.SaveChangesAsync();
         }
         public async Task DeleteAsync(int id)
         {
@@ -57,7 +53,7 @@ namespace PPI_Challenge_API.Services.Implementations
             return await _context.States.FindAsync(id);
         }
 
-        public async Task<State> GetByNameAsync(string description)
+        public async Task<State> GetByDescriptionAsync(string description)
         {
             return await _context.States.Where(e => e.Description == description).FirstOrDefaultAsync();
         }

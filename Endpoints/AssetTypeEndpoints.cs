@@ -12,12 +12,11 @@ namespace PPI_Challenge_API.Endpoints
 {
     public static class AssetTypeEndpoints
     {
-
         public static RouteGroupBuilder MapAssetType(this RouteGroupBuilder group) 
         {
             group.MapGet("/", Get).RequireAuthorization();
-            group.MapPost("/create", Create).AddEndpointFilter<ValidationFilter<AssetTypeDTO>>().RequireAuthorization();
-            group.MapPut("/update", Update).AddEndpointFilter<ValidationFilter<AssetTypeUpdateDTO>>().RequireAuthorization();
+            group.MapPost("/create", Create).AddEndpointFilter<ValidationFilter<AssetDTO>>().RequireAuthorization();
+            group.MapPut("/update", Update).AddEndpointFilter<ValidationFilter<AssetUpdateDTO>>().RequireAuthorization();
             group.MapDelete("/delete", Delete).RequireAuthorization();
             group.MapGet("/getall", GetAll).RequireAuthorization();
             return group;

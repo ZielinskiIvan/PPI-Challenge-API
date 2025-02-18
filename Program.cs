@@ -46,11 +46,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 
-
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<ICommissionTaxRepository,CommissionTaxRepository>();
+builder.Services.AddScoped<IAssetRepository, AssetRepository>();
 builder.Services.AddScoped<IAssetTypeRepository, AssetTypeRepository>();
 builder.Services.AddScoped<IStateRepository, StateRepository>();
-
 builder.Services.AddScoped<IErrorsRepository, ErrorsRepository>();
+
+builder.Services.AddScoped<IShareAmountCalculator, ShareAmountCalculator>();
+builder.Services.AddScoped<IBondAmountCalculator, BondAmountCalculator>();
+builder.Services.AddScoped<IFciAmountCalculator, FciAmountCalculator>();
+builder.Services.AddScoped<IAssetHandler, AssetHandler>();
 
 builder.Services.AddTransient<IUsersService, UsersService>();
 builder.Services.AddAutoMapper(typeof(Program));
@@ -133,5 +139,10 @@ app.MapGroup("errors").MapErrors();
 app.MapGroup("assetTypes").MapAssetType();
 
 app.MapGroup("states").MapState();
+
+app.MapGroup("assets").MapAsset();
+
+app.MapGroup("orders").MapOrders();
+
 
 app.Run();

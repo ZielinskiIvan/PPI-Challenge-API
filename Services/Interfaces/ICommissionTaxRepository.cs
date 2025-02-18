@@ -3,8 +3,8 @@ using PPI_Challenge_API.Entities;
 
 namespace PPI_Challenge_API.Services.Interfaces
 {
-    public interface IAssetTypeRepository : IBaseRepository<AssetType>
+    public interface ICommissionTaxRepository
     {
-        Task<AssetType> GetByNameAsync(string description);
+        Task<CommissionTax> GetCommissionTaxByAssetTypeIdAsync(int assetTypeId);
     }
 }

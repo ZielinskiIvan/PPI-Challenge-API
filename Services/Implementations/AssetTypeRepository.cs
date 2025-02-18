@@ -20,10 +20,7 @@ namespace PPI_Challenge_API.Services.Implementations
                 await _context.AssetTypes.AddAsync(entity);
                 await _context.SaveChangesAsync();
             }
-            else 
-            {
-                throw new Exception(ExceptionUtilities.AlreadyExitsError);
-            }
+            await _context.SaveChangesAsync();
         }
         public async Task DeleteAsync(int id)
         {
