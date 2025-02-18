@@ -21,7 +21,7 @@ namespace PPI_Challenge_API.Entities
         [StringLength(1)]
         [RegularExpression(@"^[CV]$")]
         public string Operation { get; set; }
-        public int StateID { get; set; }
+        public int StateID { get; set; } = 1;
         public State State { get; set; }
 
         [Range(0.01, double.MaxValue)]

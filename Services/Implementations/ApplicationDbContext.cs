@@ -16,6 +16,14 @@ namespace PPI_Challenge_API.Services.Implementations
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<CommissionTax>()
+           .Property(c => c.Commission)
+           .HasPrecision(18, 6); 
+
+            builder.Entity<CommissionTax>()
+                .Property(c => c.Tax)
+                .HasPrecision(18, 6);
+
             builder.Entity<AssetType>().HasData(
                 new AssetType { Id = 1, Description = "Acción" },
                 new AssetType { Id = 2, Description = "Bono" },

@@ -8,7 +8,5 @@
         public decimal Price { get; set; }
 
         public string Operation { get; set; }
-
-        public int StateID { get; set; } = 1;
     }
 }

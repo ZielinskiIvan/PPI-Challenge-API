@@ -34,7 +34,6 @@ namespace PPI_Challenge_API.Endpoints
         static async Task<Results<Created, BadRequest>> Create(OrderDTO orderDTO, IMapper mapper,
             IOrderRepository orderRepository,
             IAssetRepository assetRepository,
-            IStateRepository stateRepository,
             IUsersService usersService,
             IAssetHandler assetHandler)
         {
@@ -43,15 +42,15 @@ namespace PPI_Challenge_API.Endpoints
 
             Asset asset = await assetRepository.GetByIdAsync(orderDTO.AssetID);
 
-            if (asset is not null && await stateRepository.ExistsAsync(orderDTO.StateID))
+            if (asset is not null)
             {
                 IAssetAmountCalculator calculator = await assetHandler.GetCalculator(asset.AssetTypeID);
 
                 var order = mapper.Map<Order>(orderDTO);
                 order.UserID = user.Id;
                 order.TotalAmount = await calculator.GetTotalAmountAsync(orderDTO.Quantity,asset,orderDTO.Price);
-                await assetRepository.CreateAsync(asset);
-                return TypedResults.Created($"/States/{asset.Id}");
+                await orderRepository.CreateAsync(order);
+                return TypedResults.Created($"/States/{order.Id}");
             }
             return TypedResults.BadRequest();
         }
