@@ -14,8 +14,8 @@ namespace PPI_Challenge_API.Endpoints
         public static RouteGroupBuilder MapOrders(this RouteGroupBuilder group)
         {
             group.MapGet("/", Get).RequireAuthorization();
-            group.MapPost("/create", Create).RequireAuthorization();
-            group.MapPut("/update", Update).AddEndpointFilter<ValidationFilter<AssetUpdateDTO>>().RequireAuthorization();
+            group.MapPost("/create", Create).AddEndpointFilter<ValidationFilter<OrderDTO>>().RequireAuthorization();
+            group.MapPut("/update", Update).RequireAuthorization();
             group.MapDelete("/delete", Delete).RequireAuthorization();
             group.MapGet("/getall", GetAll).RequireAuthorization();
             return group;
@@ -55,34 +55,37 @@ namespace PPI_Challenge_API.Endpoints
             return TypedResults.BadRequest();
         }
 
-        static async Task<Results<NoContent, BadRequest>> Update(AssetUpdateDTO assetUpdateDTO, IMapper mapper, IAssetRepository assetRepository, IAssetTypeRepository assetTypeRepository)
+        static async Task<Results<NoContent, BadRequest>> Update(OrderUpdateDTO orderUpdateDTO, 
+            IMapper mapper, 
+            IStateRepository stateRepository, 
+            IOrderRepository orderRepository)
         {
-            if (await assetRepository.ExistsAsync(assetUpdateDTO.Id) && await assetTypeRepository.ExistsAsync(assetUpdateDTO.AssetTypeID))
+            if (await orderRepository.ExistsAsync(orderUpdateDTO.OrderId) && await stateRepository.ExistsAsync(orderUpdateDTO.StateId))
             {
-                var State = await assetRepository.GetByIdAsync(assetUpdateDTO.Id);
-                State = mapper.Map(assetUpdateDTO, State);
-                await assetRepository.UpdateAsync(State);
+                var order = await orderRepository.GetByIdAsync(orderUpdateDTO.OrderId);
+                order = mapper.Map(orderUpdateDTO, order);
+                await orderRepository.UpdateAsync(order);
                 return TypedResults.NoContent();
             }
             return TypedResults.BadRequest();
         }
 
-        static async Task<NoContent> Delete(int id, IAssetRepository assetRepository)
+        static async Task<NoContent> Delete(int id, IOrderRepository orderRepository)
         {
-            if (await assetRepository.ExistsAsync(id))
+            if (await orderRepository.ExistsAsync(id))
             {
-                await assetRepository.DeleteAsync(id);
+                await orderRepository.DeleteAsync(id);
             }
 
             return TypedResults.NoContent();
         }
 
-        static async Task<Results<Ok<List<AssetResponseDTO>>, NoContent>> GetAll(IAssetRepository assetRepository, IMapper mapper)
+        static async Task<Results<Ok<List<OrderResponseDTO>>, NoContent>> GetAll(IOrderRepository orderRepository, IMapper mapper)
         {
-            var states = await assetRepository.GetAllAsync();
-            if (states.Count() > 0)
+            var orders = await orderRepository.GetAllAsync();
+            if (orders.Count() > 0)
             {
-                var response = mapper.Map<List<AssetResponseDTO>>(states);
+                var response = mapper.Map<List<OrderResponseDTO>>(orders);
                 return TypedResults.Ok(response);
             }
             return TypedResults.NoContent();

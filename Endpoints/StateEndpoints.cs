@@ -48,9 +48,9 @@ namespace PPI_Challenge_API.Endpoints
         {
             if (await stateRepository.ExistsAsync(stateUpdateDTO.Id))
             {
-                var State = await stateRepository.GetByIdAsync(stateUpdateDTO.Id);
-                State = mapper.Map(stateUpdateDTO, State);
-                await stateRepository.UpdateAsync(State);
+                var state = await stateRepository.GetByIdAsync(stateUpdateDTO.Id);
+                state = mapper.Map(stateUpdateDTO, state);
+                await stateRepository.UpdateAsync(state);
                 return TypedResults.NoContent();
             }
             return TypedResults.BadRequest();

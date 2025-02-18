@@ -27,7 +27,7 @@ namespace PPI_Challenge_API.Utilities
 
             CreateMap<OrderDTO, Order>().ReverseMap();
             CreateMap<OrderUpdateDTO, Order>().ReverseMap();
-            CreateMap<OrderResponseDTO, Asset>().ReverseMap();
+            CreateMap<OrderResponseDTO, Order>().ReverseMap();
 
         }
     }

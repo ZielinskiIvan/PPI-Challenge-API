@@ -4,8 +4,8 @@
     {
         public int AssetTypeId { get; set; }
         public AssetType AssetType { get; set; } = null!;
-        public decimal Commission { get; set; }
-        public decimal Tax { get; set; }
+        public double Commission { get; set; }
+        public double Tax { get; set; }
 
     }
 }
