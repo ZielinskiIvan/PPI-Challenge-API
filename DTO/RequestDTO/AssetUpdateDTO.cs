@@ -1,9 +1,8 @@
-﻿using PPI_Challenge_API.Entities;
-
-namespace PPI_Challenge_API.DTO.RequestDTO
+﻿namespace PPI_Challenge_API.DTO.RequestDTO
 {
-    public class AssetDTO
+    public class AssetUpdateDTO
     {
+        public int Id { get; set; }
         public string Ticker { get; set; }
         public string Name { get; set; }
         public int AssetTypeID { get; set; }

@@ -12,8 +12,8 @@ using PPI_Challenge_API.Services.Implementations;
 namespace PPI_Challenge_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250216230729_AssetTypes2")]
-    partial class AssetTypes2
+    [Migration("20250217201342_Seed_Asset")]
+    partial class Seed_Asset
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,7 +28,7 @@ namespace PPI_Challenge_API.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("NVARCHAR(450)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -68,7 +68,7 @@ namespace PPI_Challenge_API.Migrations
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR(450)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -195,7 +195,7 @@ namespace PPI_Challenge_API.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("NVARCHAR(450)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -223,6 +223,35 @@ namespace PPI_Challenge_API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("PPI_Challenge_API.Entities.Asset", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssetTypeID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Ticker")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetTypeID");
+
+                    b.ToTable("Assets");
+                });
+
             modelBuilder.Entity("PPI_Challenge_API.Entities.AssetType", b =>
                 {
                     b.Property<int>("Id")
@@ -238,6 +267,30 @@ namespace PPI_Challenge_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AssetTypes");
+                });
+
+            modelBuilder.Entity("PPI_Challenge_API.Entities.CommissionTax", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssetTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Commission")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Tax")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetTypeId");
+
+                    b.ToTable("CommissionTaxes");
                 });
 
             modelBuilder.Entity("PPI_Challenge_API.Entities.Error", b =>
@@ -259,6 +312,23 @@ namespace PPI_Challenge_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Errors");
+                });
+
+            modelBuilder.Entity("PPI_Challenge_API.Entities.State", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("States");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -310,6 +380,28 @@ namespace PPI_Challenge_API.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PPI_Challenge_API.Entities.Asset", b =>
+                {
+                    b.HasOne("PPI_Challenge_API.Entities.AssetType", "AssetType")
+                        .WithMany()
+                        .HasForeignKey("AssetTypeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AssetType");
+                });
+
+            modelBuilder.Entity("PPI_Challenge_API.Entities.CommissionTax", b =>
+                {
+                    b.HasOne("PPI_Challenge_API.Entities.AssetType", "AssetType")
+                        .WithMany()
+                        .HasForeignKey("AssetTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AssetType");
                 });
 #pragma warning restore 612, 618
         }

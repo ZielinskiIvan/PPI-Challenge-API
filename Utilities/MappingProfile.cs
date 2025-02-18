@@ -21,6 +21,14 @@ namespace PPI_Challenge_API.Utilities
             CreateMap<StateUpdateDTO, State>().ReverseMap();
             CreateMap<StateResponseDTO, State>().ReverseMap();
 
+            CreateMap<AssetDTO, Asset>().ReverseMap();
+            CreateMap<AssetUpdateDTO, Asset>().ReverseMap();
+            CreateMap<AssetResponseDTO, Asset>().ReverseMap();
+
+            CreateMap<OrderDTO, Order>().ReverseMap();
+            CreateMap<OrderUpdateDTO, Order>().ReverseMap();
+            CreateMap<OrderResponseDTO, Asset>().ReverseMap();
+
         }
     }
 }

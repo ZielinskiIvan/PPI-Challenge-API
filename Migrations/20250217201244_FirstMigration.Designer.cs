@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PPI_Challenge_API.Services.Implementations;
 
@@ -11,9 +12,11 @@ using PPI_Challenge_API.Services.Implementations;
 namespace PPI_Challenge_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250217201244_FirstMigration")]
+    partial class FirstMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,80 +250,6 @@ namespace PPI_Challenge_API.Migrations
                     b.HasIndex("AssetTypeID");
 
                     b.ToTable("Assets");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AssetTypeID = 1,
-                            Name = "Apple",
-                            Ticker = "AAPL",
-                            UnitPrice = 177.97m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AssetTypeID = 1,
-                            Name = "Alphabet Inc",
-                            Ticker = "GOOGL",
-                            UnitPrice = 138.21m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AssetTypeID = 1,
-                            Name = "Microsoft",
-                            Ticker = "MSFT",
-                            UnitPrice = 329.04m
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AssetTypeID = 1,
-                            Name = "Coca Cola",
-                            Ticker = "KO",
-                            UnitPrice = 58.3m
-                        },
-                        new
-                        {
-                            Id = 5,
-                            AssetTypeID = 1,
-                            Name = "Walmart",
-                            Ticker = "WMT",
-                            UnitPrice = 163.42m
-                        },
-                        new
-                        {
-                            Id = 6,
-                            AssetTypeID = 2,
-                            Name = "BONOS ARGENTINA USD 2030 L.A",
-                            Ticker = "AL30",
-                            UnitPrice = 307.4m
-                        },
-                        new
-                        {
-                            Id = 7,
-                            AssetTypeID = 2,
-                            Name = "Bonos Globales Argentina USD Step Up 2030",
-                            Ticker = "GD30",
-                            UnitPrice = 336.1m
-                        },
-                        new
-                        {
-                            Id = 8,
-                            AssetTypeID = 3,
-                            Name = "Delta Pesos Clase A",
-                            Ticker = "Delta.Pesos",
-                            UnitPrice = 0.0181m
-                        },
-                        new
-                        {
-                            Id = 9,
-                            AssetTypeID = 3,
-                            Name = "Fima Premium Clase A",
-                            Ticker = "Fima.Premium",
-                            UnitPrice = 0.0317m
-                        });
                 });
 
             modelBuilder.Entity("PPI_Challenge_API.Entities.AssetType", b =>
@@ -338,23 +267,6 @@ namespace PPI_Challenge_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AssetTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Acción"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Bono"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "FCI"
-                        });
                 });
 
             modelBuilder.Entity("PPI_Challenge_API.Entities.CommissionTax", b =>
@@ -369,41 +281,16 @@ namespace PPI_Challenge_API.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Commission")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Tax")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AssetTypeId");
 
                     b.ToTable("CommissionTaxes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AssetTypeId = 1,
-                            Commission = 0.006m,
-                            Tax = 0.21m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AssetTypeId = 2,
-                            Commission = 0.002m,
-                            Tax = 0.21m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AssetTypeId = 3,
-                            Commission = 0.0m,
-                            Tax = 0.0m
-                        });
                 });
 
             modelBuilder.Entity("PPI_Challenge_API.Entities.Error", b =>
@@ -427,49 +314,6 @@ namespace PPI_Challenge_API.Migrations
                     b.ToTable("Errors");
                 });
 
-            modelBuilder.Entity("PPI_Challenge_API.Entities.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AssetID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Operation")
-                        .IsRequired()
-                        .HasMaxLength(1)
-                        .HasColumnType("nvarchar(1)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StateID")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssetID");
-
-                    b.HasIndex("StateID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Orders");
-                });
-
             modelBuilder.Entity("PPI_Challenge_API.Entities.State", b =>
                 {
                     b.Property<int>("Id")
@@ -485,23 +329,6 @@ namespace PPI_Challenge_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("States");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "En proceso"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Ejecutada"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "Cancelada"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -575,33 +402,6 @@ namespace PPI_Challenge_API.Migrations
                         .IsRequired();
 
                     b.Navigation("AssetType");
-                });
-
-            modelBuilder.Entity("PPI_Challenge_API.Entities.Order", b =>
-                {
-                    b.HasOne("PPI_Challenge_API.Entities.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PPI_Challenge_API.Entities.State", "State")
-                        .WithMany()
-                        .HasForeignKey("StateID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Asset");
-
-                    b.Navigation("State");
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
