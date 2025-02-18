@@ -8,6 +8,6 @@
 
         public int AssetTypeID { get; set; }
 
-        public decimal UnitPrice { get; set; }
+        public double UnitPrice { get; set; }
     }
 }

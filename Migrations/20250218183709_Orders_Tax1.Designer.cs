@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PPI_Challenge_API.Services.Implementations;
 
@@ -11,9 +12,11 @@ using PPI_Challenge_API.Services.Implementations;
 namespace PPI_Challenge_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250218183709_Orders_Tax1")]
+    partial class Orders_Tax1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -239,8 +242,8 @@ namespace PPI_Challenge_API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("UnitPrice")
-                        .HasColumnType("float");
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -255,7 +258,7 @@ namespace PPI_Challenge_API.Migrations
                             AssetTypeID = 1,
                             Name = "Apple",
                             Ticker = "AAPL",
-                            UnitPrice = 177.97
+                            UnitPrice = 177.97m
                         },
                         new
                         {
@@ -263,7 +266,7 @@ namespace PPI_Challenge_API.Migrations
                             AssetTypeID = 1,
                             Name = "Alphabet Inc",
                             Ticker = "GOOGL",
-                            UnitPrice = 138.21000000000001
+                            UnitPrice = 138.21m
                         },
                         new
                         {
@@ -271,7 +274,7 @@ namespace PPI_Challenge_API.Migrations
                             AssetTypeID = 1,
                             Name = "Microsoft",
                             Ticker = "MSFT",
-                            UnitPrice = 329.04000000000002
+                            UnitPrice = 329.04m
                         },
                         new
                         {
@@ -279,7 +282,7 @@ namespace PPI_Challenge_API.Migrations
                             AssetTypeID = 1,
                             Name = "Coca Cola",
                             Ticker = "KO",
-                            UnitPrice = 58.299999999999997
+                            UnitPrice = 58.3m
                         },
                         new
                         {
@@ -287,7 +290,7 @@ namespace PPI_Challenge_API.Migrations
                             AssetTypeID = 1,
                             Name = "Walmart",
                             Ticker = "WMT",
-                            UnitPrice = 163.41999999999999
+                            UnitPrice = 163.42m
                         },
                         new
                         {
@@ -295,7 +298,7 @@ namespace PPI_Challenge_API.Migrations
                             AssetTypeID = 2,
                             Name = "BONOS ARGENTINA USD 2030 L.A",
                             Ticker = "AL30",
-                            UnitPrice = 307.39999999999998
+                            UnitPrice = 307.4m
                         },
                         new
                         {
@@ -303,7 +306,7 @@ namespace PPI_Challenge_API.Migrations
                             AssetTypeID = 2,
                             Name = "Bonos Globales Argentina USD Step Up 2030",
                             Ticker = "GD30",
-                            UnitPrice = 336.10000000000002
+                            UnitPrice = 336.1m
                         },
                         new
                         {
@@ -311,7 +314,7 @@ namespace PPI_Challenge_API.Migrations
                             AssetTypeID = 3,
                             Name = "Delta Pesos Clase A",
                             Ticker = "Delta.Pesos",
-                            UnitPrice = 0.018100000000000002
+                            UnitPrice = 0.0181m
                         },
                         new
                         {
@@ -319,7 +322,7 @@ namespace PPI_Challenge_API.Migrations
                             AssetTypeID = 3,
                             Name = "Fima Premium Clase A",
                             Ticker = "Fima.Premium",
-                            UnitPrice = 0.031699999999999999
+                            UnitPrice = 0.0317m
                         });
                 });
 
@@ -452,9 +455,8 @@ namespace PPI_Challenge_API.Migrations
                     b.Property<int>("StateID")
                         .HasColumnType("int");
 
-                    b.Property<double>("TotalAmount")
-                        .HasPrecision(18, 6)
-                        .HasColumnType("float(18)");
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UserID")
                         .IsRequired()

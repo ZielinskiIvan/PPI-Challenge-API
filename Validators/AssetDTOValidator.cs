@@ -8,9 +8,9 @@ namespace PPI_Challenge_API.Validators
     {
         public AssetDTOValidator()
         {
-            RuleFor(e => e.AssetTypeID).GreaterThan(0).WithMessage(ValidationUtilities.MinimumLengthMessage).NotEmpty().WithMessage(ValidationUtilities.NonEmptyMessage);
+            RuleFor(e => e.AssetTypeID).GreaterThan(0).WithMessage(ValidationUtilities.MinimumLengthMessage).WithMessage(ValidationUtilities.NonEmptyMessage);
             RuleFor(e => e.Ticker).NotEmpty().WithMessage(ValidationUtilities.NonEmptyMessage);
-            RuleFor(e => e.Name).NotEmpty().WithMessage(ValidationUtilities.NonEmptyMessage);
+            RuleFor(e => e.Name).NotEmpty().WithMessage(ValidationUtilities.NonEmptyMessage).MaximumLength(32).WithMessage(ValidationUtilities.MaximumLengthMessage);
             RuleFor(e => e.UnitPrice).NotEmpty().WithMessage(ValidationUtilities.NonEmptyMessage).GreaterThan(0).WithMessage(ValidationUtilities.MinimumLengthMessage);
         }
     }

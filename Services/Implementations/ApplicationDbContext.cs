@@ -16,6 +16,10 @@ namespace PPI_Challenge_API.Services.Implementations
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Order>()
+            .Property(c => c.TotalAmount)
+            .HasPrecision(18, 6);
+
             builder.Entity<CommissionTax>()
            .Property(c => c.Commission)
            .HasPrecision(18, 6); 
@@ -31,20 +35,20 @@ namespace PPI_Challenge_API.Services.Implementations
             );
 
             builder.Entity<CommissionTax>().HasData(
-                new CommissionTax { Id = 1, AssetTypeId = 1, Commission = 0.006m, Tax = 0.21m },
-                new CommissionTax { Id = 2, AssetTypeId = 2, Commission = 0.002m, Tax = 0.21m },
-                new CommissionTax { Id = 3, AssetTypeId = 3, Commission = 0.0m, Tax = 0.0m }
+                new CommissionTax { Id = 1, AssetTypeId = 1, Commission = 0.006, Tax = 0.21 },
+                new CommissionTax { Id = 2, AssetTypeId = 2, Commission = 0.002, Tax = 0.21 },
+                new CommissionTax { Id = 3, AssetTypeId = 3, Commission = 0.0, Tax = 0.0 }
             );
             builder.Entity<Asset>().HasData(
-                new Asset { Id = 1, Ticker = "AAPL", Name = "Apple", AssetTypeID = 1, UnitPrice = 177.97m },
-                new Asset { Id = 2, Ticker = "GOOGL", Name = "Alphabet Inc", AssetTypeID = 1, UnitPrice = 138.21m },
-                new Asset { Id = 3, Ticker = "MSFT", Name = "Microsoft", AssetTypeID = 1, UnitPrice = 329.04m },
-                new Asset { Id = 4, Ticker = "KO", Name = "Coca Cola", AssetTypeID = 1, UnitPrice = 58.3m },
-                new Asset { Id = 5, Ticker = "WMT", Name = "Walmart", AssetTypeID = 1, UnitPrice = 163.42m },
-                new Asset { Id = 6, Ticker = "AL30", Name = "BONOS ARGENTINA USD 2030 L.A", AssetTypeID = 2, UnitPrice = 307.4m },
-                new Asset { Id = 7, Ticker = "GD30", Name = "Bonos Globales Argentina USD Step Up 2030", AssetTypeID = 2, UnitPrice = 336.1m },
-                new Asset { Id = 8, Ticker = "Delta.Pesos", Name = "Delta Pesos Clase A", AssetTypeID = 3, UnitPrice = 0.0181m },
-                new Asset { Id = 9, Ticker = "Fima.Premium", Name = "Fima Premium Clase A", AssetTypeID = 3, UnitPrice = 0.0317m }
+                new Asset { Id = 1, Ticker = "AAPL", Name = "Apple", AssetTypeID = 1, UnitPrice = 177.97 },
+                new Asset { Id = 2, Ticker = "GOOGL", Name = "Alphabet Inc", AssetTypeID = 1, UnitPrice = 138.21 },
+                new Asset { Id = 3, Ticker = "MSFT", Name = "Microsoft", AssetTypeID = 1, UnitPrice = 329.04 },
+                new Asset { Id = 4, Ticker = "KO", Name = "Coca Cola", AssetTypeID = 1, UnitPrice = 58.3 },
+                new Asset { Id = 5, Ticker = "WMT", Name = "Walmart", AssetTypeID = 1, UnitPrice = 163.42 },
+                new Asset { Id = 6, Ticker = "AL30", Name = "BONOS ARGENTINA USD 2030 L.A", AssetTypeID = 2, UnitPrice = 307.4 },
+                new Asset { Id = 7, Ticker = "GD30", Name = "Bonos Globales Argentina USD Step Up 2030", AssetTypeID = 2, UnitPrice = 336.1 },
+                new Asset { Id = 8, Ticker = "Delta.Pesos", Name = "Delta Pesos Clase A", AssetTypeID = 3, UnitPrice = 0.0181 },
+                new Asset { Id = 9, Ticker = "Fima.Premium", Name = "Fima Premium Clase A", AssetTypeID = 3, UnitPrice = 0.0317 }
             );
 
             builder.Entity<State>().HasData(

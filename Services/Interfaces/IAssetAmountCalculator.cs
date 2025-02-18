@@ -4,6 +4,6 @@ namespace PPI_Challenge_API.Services.Interfaces
 {
     public interface IAssetAmountCalculator
     {
-        Task<decimal> GetTotalAmountAsync(int quanity,Asset asset, decimal? price = null);
+        Task<double> GetTotalAmountAsync(int quanity,Asset asset, double? price = null);
     }
 }

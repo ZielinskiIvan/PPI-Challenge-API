@@ -5,9 +5,9 @@ namespace PPI_Challenge_API.Services.Implementations
 {
     public class FciAmountCalculator : IFciAmountCalculator
     {
-        public async Task<decimal> GetTotalAmountAsync(int quanity, Asset asset, decimal? price = null)
+        public async Task<double> GetTotalAmountAsync(int quanity, Asset asset, double? price = null)
         {
-            return price.Value * quanity;
+            return asset.UnitPrice * quanity;
         }
     }
 }

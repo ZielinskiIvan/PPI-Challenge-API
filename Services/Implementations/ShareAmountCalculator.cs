@@ -13,12 +13,12 @@ namespace PPI_Challenge_API.Services.Implementations
             _commissionTaxRepository = commissionTaxRepository;
         }
 
-        public async Task<decimal> GetTotalAmountAsync(int quanity, Asset asset, decimal? price = null)
+        public async Task<double> GetTotalAmountAsync(int quanity, Asset asset, double? price = null)
         {
             CommissionTax commissionTax = await _commissionTaxRepository.GetCommissionTaxByAssetTypeIdAsync(asset.AssetTypeID);
-            decimal totalAmount = asset.UnitPrice * quanity;
-            decimal commission = totalAmount * commissionTax.Commission;
-            decimal tax = commission * commissionTax.Tax;
+            double totalAmount = asset.UnitPrice * quanity;
+            double commission = totalAmount * commissionTax.Commission;
+            double tax = commission * commissionTax.Tax;
 
             return totalAmount + commission + tax;
         }

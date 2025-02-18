@@ -20,11 +20,11 @@ namespace PPI_Challenge_API.Entities
         [Required]
         [StringLength(1)]
         [RegularExpression(@"^[CV]$")]
-        public string Operation { get; set; }
-        public int StateID { get; set; } = 1;
+        public char Operation { get; set; }
+        public int StateID { get; set; } = 1; // Tomamos 1 como en proceso(enunciado), se puede poner tambien como una variable estatica, pero si cambia la tabla de States, tendremos que cambiar el valor tambien
         public State State { get; set; }
 
         [Range(0.01, double.MaxValue)]
-        public decimal TotalAmount { get; set; }
+        public double TotalAmount { get; set; }
     }
 }

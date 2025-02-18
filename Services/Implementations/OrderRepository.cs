@@ -23,11 +23,11 @@ namespace PPI_Challenge_API.Services.Implementations
         }
         public async Task DeleteAsync(int id)
         {
-            var row = await _context.States.FindAsync(id);
+            var row = await _context.Orders.FindAsync(id);
 
             if (row != null)
             {
-                await _context.States.Where(a => a.Id == id).ExecuteDeleteAsync();
+                await _context.Orders.Where(a => a.Id == id).ExecuteDeleteAsync();
             }
 
             await _context.SaveChangesAsync();
