@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PPI_Challenge_API.Entities;
+using PPI_Challenge_API.Repositories.Interfaces;
 using PPI_Challenge_API.Services.Interfaces;
 
-namespace PPI_Challenge_API.Services.Implementations
+namespace PPI_Challenge_API.Repositories.Implementations
 {
     public class ErrorsRepository : IErrorsRepository
     {
@@ -11,7 +12,7 @@ namespace PPI_Challenge_API.Services.Implementations
 
         public ErrorsRepository(IApplicationDbContext context)
         {
-            this._context = context;
+            _context = context;
         }
         public async Task CreateAsync(Error entity)
         {

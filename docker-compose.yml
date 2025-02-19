@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   sqlserver:
-    image: mi-sqlserver-personalizado  # Usa tu imagen personalizada de SQL Server
+    image: ivanzielinski/mi-imagen-sqlserver
     container_name: sqlserver
     ports:
       - "1433:1433"
@@ -10,12 +10,12 @@ services:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=A12345678
       - SQLSERVER_TCP_PORT=1433
-      - SQLSERVER_SSL_ENABLED=false  # Deshabilitar SSL (si es compatible con la versión)
+      - SQLSERVER_SSL_ENABLED=false
     networks:
       - app-network
 
   api:
-    image: ppi-challenge-api  # Tu API
+    image: ppi_entregable
     container_name: ppi-api
     build:
       context: .
@@ -23,7 +23,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=PPI_CHALLENGE;User Id=sa;Password=A12345678;Encrypt=False;TrustServerCertificate=True;  # Asegúrate de no usar SSL
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=PPI_CHALLENGE;User Id=sa;Password=A12345678;Encrypt=False;TrustServerCertificate=True;
     depends_on:
       - sqlserver
     networks:

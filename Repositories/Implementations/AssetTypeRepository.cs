@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PPI_Challenge_API.Entities;
+using PPI_Challenge_API.Repositories.Interfaces;
 using PPI_Challenge_API.Services.Interfaces;
 using PPI_Challenge_API.Utilities;
 
-namespace PPI_Challenge_API.Services.Implementations
+namespace PPI_Challenge_API.Repositories.Implementations
 {
     public class AssetTypeRepository : IAssetTypeRepository
     {
@@ -11,7 +12,7 @@ namespace PPI_Challenge_API.Services.Implementations
 
         public AssetTypeRepository(IApplicationDbContext context)
         {
-            this._context = context;
+            _context = context;
         }
         public async Task CreateAsync(AssetType entity)
         {

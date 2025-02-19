@@ -1,4 +1,5 @@
 ﻿using PPI_Challenge_API.Entities;
+using PPI_Challenge_API.Repositories.Interfaces;
 using PPI_Challenge_API.Services.Interfaces;
 
 namespace PPI_Challenge_API.Services.Implementations

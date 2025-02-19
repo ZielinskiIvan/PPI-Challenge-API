@@ -1,4 +1,4 @@
-﻿namespace PPI_Challenge_API.Services.Interfaces
+﻿namespace PPI_Challenge_API.Repositories.Interfaces
 {
     public interface IBaseRepository<T> : ICrudRepository<T>
     {
