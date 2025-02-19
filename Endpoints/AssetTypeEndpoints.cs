@@ -15,8 +15,8 @@ namespace PPI_Challenge_API.Endpoints
         public static RouteGroupBuilder MapAssetType(this RouteGroupBuilder group) 
         {
             group.MapGet("/", Get).RequireAuthorization();
-            group.MapPost("/create", Create).AddEndpointFilter<ValidationFilter<AssetDTO>>().RequireAuthorization();
-            group.MapPut("/update", Update).AddEndpointFilter<ValidationFilter<AssetUpdateDTO>>().RequireAuthorization();
+            group.MapPost("/create", Create).AddEndpointFilter<ValidationFilter<AssetTypeDTO>>().RequireAuthorization();
+            group.MapPut("/update", Update).AddEndpointFilter<ValidationFilter<AssetTypeUpdateDTO>>().RequireAuthorization();
             group.MapDelete("/delete", Delete).RequireAuthorization();
             group.MapGet("/getall", GetAll).RequireAuthorization();
             return group;
@@ -25,7 +25,7 @@ namespace PPI_Challenge_API.Endpoints
 
         static async Task<Results<Ok<AssetTypeResponseDTO>, NoContent>> Get(int id, IMapper mapper, IAssetTypeRepository assetTypeRepository)
         {
-            if (await assetTypeRepository.ExistsAsync(id.ToString()))
+            if (await assetTypeRepository.ExistsAsync(id))
             {
                 AssetType assetType = await assetTypeRepository.GetByIdAsync(id);
                 var response = mapper.Map<AssetTypeResponseDTO>(assetType);

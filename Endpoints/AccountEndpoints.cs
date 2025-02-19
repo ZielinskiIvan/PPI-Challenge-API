@@ -26,18 +26,24 @@ namespace PPI_Challenge_API.Endpoints
                 .AddEndpointFilter<ValidationFilter<UserRegisterDTO>>();
             group.MapGet("/renew", Renew)
                 .RequireAuthorization();
-            group.MapPost("/changepassword", ChangePassword)
+            group.MapPost("/changepassword", ChangePassword).RequireAuthorization(PolicyUtilities.AdminPolicy)
                 .AddEndpointFilter<ValidationFilter<ChangePasswordDTO>>();
             group.MapPost("/login", Login)
                 .AddEndpointFilter<ValidationFilter<UserCredentialsDTO>>();
             group.MapPost("/makeAdmin", MakeAdmin)
-                .RequireAuthorization(PolicyUtilities.AdminPolicy);
+                .RequireAuthorization();
             return group;
         }
 
-        private static async Task<Results<Ok<AuthenticationResponseDTO>,BadRequest<IEnumerable<IdentityError>>>> Register([FromServices] UserManager<IdentityUser> userManager, UserRegisterDTO userCredentialsDTO, IConfiguration configuration, IMapper mapper) 
+        private static async Task<Results<Ok<AuthenticationResponseDTO>,BadRequest<IEnumerable<IdentityError>>,BadRequest<string>>> Register([FromServices] UserManager<IdentityUser> userManager, UserRegisterDTO userCredentialsDTO, IConfiguration configuration, IMapper mapper) 
         {
-            var user = mapper.Map<IdentityUser>(userCredentialsDTO);
+            var user = await userManager.FindByEmailAsync(userCredentialsDTO.Email);
+            
+            if (user is not null) 
+            {
+                return TypedResults.BadRequest(Utilities.EndpointUtilities.MailDuplicated);
+            }
+            user = mapper.Map<IdentityUser>(userCredentialsDTO);
             var result = await userManager.CreateAsync(user, userCredentialsDTO.Password);
 
             if (result.Succeeded)

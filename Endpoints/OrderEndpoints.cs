@@ -16,7 +16,7 @@ namespace PPI_Challenge_API.Endpoints
         {
             group.MapGet("/", Get).RequireAuthorization();
             group.MapPost("/create", Create).AddEndpointFilter<ValidationFilter<OrderDTO>>().RequireAuthorization();
-            group.MapPut("/update", Update).RequireAuthorization();
+            group.MapPut("/update", Update).AddEndpointFilter<ValidationFilter<OrderUpdateDTO>>().RequireAuthorization();
             group.MapDelete("/delete", Delete).RequireAuthorization();
             group.MapGet("/getall", GetAll).RequireAuthorization();
             return group;
@@ -61,9 +61,9 @@ namespace PPI_Challenge_API.Endpoints
             IStateRepository stateRepository, 
             IOrderRepository orderRepository)
         {
-            if (await orderRepository.ExistsAsync(orderUpdateDTO.OrderId) && await stateRepository.ExistsAsync(orderUpdateDTO.StateId))
+            if (await orderRepository.ExistsAsync(orderUpdateDTO.Id) && await stateRepository.ExistsAsync(orderUpdateDTO.StateId))
             {
-                var order = await orderRepository.GetByIdAsync(orderUpdateDTO.OrderId);
+                var order = await orderRepository.GetByIdAsync(orderUpdateDTO.Id);
                 order = mapper.Map(orderUpdateDTO, order);
                 await orderRepository.UpdateAsync(order);
                 return TypedResults.NoContent();
