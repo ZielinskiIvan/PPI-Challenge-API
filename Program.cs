@@ -11,6 +11,8 @@ using PPI_Challenge_API.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore.Storage;
+using PPI_Challenge_API.Repositories.Implementations;
+using PPI_Challenge_API.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

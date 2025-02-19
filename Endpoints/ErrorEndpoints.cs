@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using PPI_Challenge_API.DTO.ResponseDTO;
 using PPI_Challenge_API.Entities;
-using PPI_Challenge_API.Services.Interfaces;
+using PPI_Challenge_API.Repositories.Interfaces;
 using PPI_Challenge_API.Utilities;
 using System.ComponentModel;
 

@@ -2,7 +2,7 @@
 using PPI_Challenge_API.Entities;
 using PPI_Challenge_API.Services.Interfaces;
 
-namespace PPI_Challenge_API.Services.Implementations
+namespace PPI_Challenge_API.Repositories.Implementations
 {
     public class CommissionTaxRepository : ICommissionTaxRepository
     {
@@ -10,7 +10,7 @@ namespace PPI_Challenge_API.Services.Implementations
 
         public CommissionTaxRepository(IApplicationDbContext context)
         {
-            this._context = context;
+            _context = context;
         }
 
         public async Task<CommissionTax> GetCommissionTaxByAssetTypeIdAsync(int assetTypeId)

@@ -5,7 +5,7 @@ using PPI_Challenge_API.DTO.RequestDTO;
 using PPI_Challenge_API.DTO.ResponseDTO;
 using PPI_Challenge_API.Entities;
 using PPI_Challenge_API.Filters;
-using PPI_Challenge_API.Services.Interfaces;
+using PPI_Challenge_API.Repositories.Interfaces;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PPI_Challenge_API.Endpoints
